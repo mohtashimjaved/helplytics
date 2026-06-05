@@ -10,12 +10,25 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT
 
-// Configure CORS options
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://helplytics-project.vercel.app' // Replace with your actual production frontend URL
+];
+
 const corsOptions = {
-  origin: 'http://localhost:3000', 'https://helplytics-project.vercel.app' // Allow only your frontend
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Allow cookies/auth headers if needed
-  optionsSuccessStatus: 204 // Some legacy browsers choke on 204
+  credentials: true,
+  optionsSuccessStatus: 204
 };
 
 app.use(express.json());
