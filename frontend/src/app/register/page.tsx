@@ -79,22 +79,22 @@ export default function Register() {
   };
 
   return (
-    <div className="container animate-fade-in-up" style={{ padding: '4rem 2rem', display: 'flex', justifyContent: 'center' }}>
-      <div className="glass-card" style={{ width: '100%', maxWidth: '800px', padding: '4rem', background: 'white', boxShadow: '0 40px 100px rgba(0,0,0,0.08)' }}>
-        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <h1 className="heading-lg" style={{ marginBottom: '0.75rem', fontSize: '2.5rem' }}>Join the Community</h1>
-          <p className="text-muted" style={{ fontSize: '1.05rem' }}>Create your profile to start getting and offering help.</p>
+    <div className="container animate-fade-in-up register-page-wrapper" style={{ display: 'flex', justifyContent: 'center' }}>
+      <div className="glass-card register-card" style={{ width: '100%', maxWidth: '800px', background: 'white', boxShadow: '0 40px 100px rgba(0,0,0,0.08)' }}>
+        <div className="register-header" style={{ textAlign: 'center' }}>
+          <h1 className="heading-lg register-title">Join the Community</h1>
+          <p className="text-muted register-subtitle">Create your profile to start getting and offering help.</p>
         </div>
 
         {serverError && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.15)', padding: '1.25rem', borderRadius: '16px', marginBottom: '2.5rem', color: 'var(--danger)', fontSize: '0.95rem', fontWeight: '500', gridColumn: 'span 2' }}>
+          <div className="register-error" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.15)', padding: '1.25rem', borderRadius: '16px', color: 'var(--danger)', fontSize: '0.95rem', fontWeight: '500' }}>
             <AlertCircle size={20} /> {serverError}
           </div>
         )}
         
-        <form onSubmit={handleRegister} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <form onSubmit={handleRegister} className="register-form" style={{ display: 'grid', gap: '1.5rem' }}>
           {/* Full Name */}
-          <div style={{ gridColumn: 'span 2' }}>
+          <div className="span-full">
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.85rem', color: '#334155', fontWeight: '600' }}>
               <User size={18} style={{ color: 'var(--primary)' }} /> Full Name
             </label>
@@ -145,7 +145,7 @@ export default function Register() {
           </div>
           
           {/* Role Dropdown */}
-          <div style={{ gridColumn: 'span 2' }}>
+          <div className="span-full">
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.85rem', color: '#334155', fontWeight: '600' }}>
               <Briefcase size={18} style={{ color: 'var(--primary)' }} /> Your Goal
             </label>
@@ -164,7 +164,7 @@ export default function Register() {
           </div>
 
           {/* Skills */}
-          <div style={{ gridColumn: 'span 2' }}>
+          <div className="span-full">
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.85rem', color: '#334155', fontWeight: '600' }}>
               <Briefcase size={18} style={{ color: 'var(--primary)' }} /> Skills (comma separated)
             </label>
@@ -213,7 +213,7 @@ export default function Register() {
 
           <button 
             className="btn btn-primary" 
-            style={{ gridColumn: 'span 2', marginTop: '1.5rem', padding: '1.4rem', fontSize: '1.1rem' }} 
+            style={{ marginTop: '1.5rem', padding: '1.4rem', fontSize: '1.1rem' }} 
             type="submit"
             disabled={loading}
           >
@@ -225,6 +225,36 @@ export default function Register() {
         </p>
       </div>
       <style dangerouslySetInnerHTML={{ __html: `
+        .register-page-wrapper { padding: 2rem 1rem; }
+        .register-card { padding: 2rem 1.5rem; }
+        .register-header { marginBottom: 2.5rem; }
+        .register-title { fontSize: 2rem; }
+        .register-subtitle { fontSize: 0.95rem; }
+        .register-error { grid-column: 1 / -1; marginBottom: 1.5rem; }
+        .register-form { grid-template-columns: 1fr; }
+        .register-form .btn-primary { grid-column: 1 / -1; }
+        .span-full { grid-column: 1 / -1; }
+
+        @media (min-width: 640px) {
+          .register-form { grid-template-columns: 1fr 1fr; gap: 2rem; }
+          .register-header { marginBottom: 3.5rem; }
+          .register-title { fontSize: 2.5rem; }
+          .register-subtitle { fontSize: 1.05rem; }
+          .register-card { padding: 4rem; }
+          .register-page-wrapper { padding: 4rem 2rem; }
+          .register-error { marginBottom: 2.5rem; }
+          
+          /* Ensure specific fields span full width on desktop */
+          .span-full { grid-column: span 2; }
+          .register-form .btn-primary { grid-column: span 2; }
+        }
+
+        @media (max-width: 480px) {
+          .register-card { padding: 1.5rem 1rem; }
+          .register-title { fontSize: 1.75rem; }
+          .register-page-wrapper { padding: 1rem 0.5rem; }
+        }
+
         .border-danger { border-color: var(--danger) !important; }
       `}} />
     </div>
