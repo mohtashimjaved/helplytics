@@ -50,11 +50,11 @@ export default function Login() {
   };
 
   return (
-    <div className="container animate-fade-in-up" style={{ padding: '6rem 2rem', display: 'flex', justifyContent: 'center' }}>
-      <div className="glass-card" style={{ width: '100%', maxWidth: '520px', padding: '4rem', background: 'white', boxShadow: '0 40px 100px rgba(0,0,0,0.08)' }}>
-        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <h1 className="heading-lg" style={{ marginBottom: '0.75rem', fontSize: '2.5rem' }}>Welcome Back</h1>
-          <p className="text-muted" style={{ fontSize: '1.05rem' }}>Enter your credentials to access your dashboard.</p>
+    <div className="container animate-fade-in-up login-page-wrapper" style={{ display: 'flex', justifyContent: 'center' }}>
+      <div className="glass-card login-card" style={{ width: '100%', maxWidth: '520px', background: 'white', boxShadow: '0 40px 100px rgba(0,0,0,0.08)' }}>
+        <div className="login-header" style={{ textAlign: 'center' }}>
+          <h1 className="heading-lg login-title" style={{ marginBottom: '0.75rem' }}>Welcome Back</h1>
+          <p className="text-muted login-subtitle">Enter your credentials to access your dashboard.</p>
         </div>
         
         {serverError && (
@@ -112,6 +112,28 @@ export default function Login() {
         </p>
       </div>
       <style dangerouslySetInnerHTML={{ __html: `
+        .login-page-wrapper { padding: 3rem 1rem; }
+        .login-card { padding: 2rem 1.5rem; }
+        .login-header { margin-bottom: 2.5rem; }
+        .login-title { font-size: 2rem; }
+        .login-subtitle { font-size: 0.95rem; }
+
+        @media (min-width: 640px) {
+          .login-page-wrapper { padding: 6rem 2rem; }
+          .login-card { padding: 4rem; }
+          .login-header { margin-bottom: 3.5rem; }
+          .login-title { font-size: 2.5rem; }
+          .login-subtitle { font-size: 1.05rem; }
+        }
+
+        @media (max-width: 480px) {
+          .login-page-wrapper { padding: 2rem 0.5rem; }
+          .login-card { padding: 2rem 1rem; border-radius: 20px; }
+          .login-title { font-size: 1.75rem; }
+          .login-subtitle { font-size: 0.9rem; }
+          .btn-primary { padding: 1.1rem !important; font-size: 1rem !important; }
+        }
+
         .border-danger { border-color: var(--danger) !important; }
       `}} />
     </div>
