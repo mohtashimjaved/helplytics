@@ -17,6 +17,8 @@
   --danger: #ef4444;
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --nav-height: 72px;
+  --container-padding: 1rem;
 }
 
 * {
@@ -79,7 +81,7 @@ a {
     0 4px 6px -1px rgba(0, 0, 0, 0.02), 
     0 10px 15px -3px rgba(0, 0, 0, 0.02),
     inset 0 1px 0 rgba(255, 255, 255, 1);
-  padding: 2.5rem;
+  padding: 1.5rem;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   position: relative;
   overflow: hidden;
@@ -108,6 +110,13 @@ a {
     inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
+@media (min-width: 768px) {
+  .glass-card {
+    padding: 2rem;
+    border-radius: 24px;
+  }
+}
+
 /* Premium Buttons */
 .btn {
   display: inline-flex;
@@ -124,6 +133,7 @@ a {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  white-space: nowrap;
 }
 
 .btn-primary {
@@ -163,7 +173,7 @@ a {
 /* Typography */
 .heading-xl {
   font-family: var(--font-heading);
-  font-size: 5rem;
+  font-size: clamp(2.5rem, 6vw, 5rem);
   font-weight: 800;
   line-height: 1.05;
   color: #0f172a;
@@ -173,7 +183,7 @@ a {
 
 .heading-lg {
   font-family: var(--font-heading);
-  font-size: 3rem;
+  font-size: clamp(1.75rem, 4vw, 3rem);
   font-weight: 800;
   color: #0f172a;
   margin-bottom: 1rem;
@@ -202,16 +212,27 @@ a {
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--container-padding);
+}
+
+.main-content {
+  min-height: calc(100vh - var(--nav-height));
+  padding: 2rem 0;
 }
 
 .grid {
   display: grid;
-  gap: 2.5rem;
+  gap: 1.5rem;
 }
 
 .grid-cols-3 {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .grid-cols-3 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
 }
 
 /* Form Elements */
@@ -325,8 +346,8 @@ a {
 
 .toast {
   pointer-events: auto;
-  min-width: 350px;
-  max-width: 450px;
+  min-width: 320px;
+  max-width: 420px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -383,4 +404,97 @@ a {
 .toast-error .toast-icon { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
 .toast-info .toast-icon { background: rgba(5, 150, 105, 0.1); color: var(--primary); }
 
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
 
+/* Tablet (max 1024px) */
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: 2rem;
+  }
+  .grid { gap: 2.5rem; }
+  .glass-card { padding: 2.5rem; border-radius: 28px; }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .glass-card {
+    padding: 2rem;
+    border-radius: 24px;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+/* Mobile Large (max 768px) */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .glass-card:hover {
+    transform: none;
+  }
+
+  .text-muted {
+    font-size: 1rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .toast-container {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+  }
+
+  .toast {
+    min-width: unset;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+/* Mobile Small (max 480px) */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+
+  .glass-card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .btn {
+    padding: 0.65rem 1.25rem;
+    font-size: 0.85rem;
+  }
+
+  .heading-xl {
+    font-size: clamp(2rem, 8vw, 2.75rem);
+    letter-spacing: -0.03em;
+  }
+
+  .heading-lg {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .badge {
+    padding: 0.3rem 0.85rem;
+    font-size: 0.75rem;
+  }
+}
