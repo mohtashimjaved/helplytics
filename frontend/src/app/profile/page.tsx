@@ -106,14 +106,16 @@ export default function Profile() {
     return (
       <div className="container" style={{ padding: '4rem 2rem' }}>
         <div className="glass-card skeleton" style={{ height: '300px', marginBottom: '2rem' }}></div>
-        <div className="grid grid-cols-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
+        <div className="skeleton-grid">
           <div className="glass-card skeleton" style={{ height: '200px' }}></div>
           <div className="glass-card skeleton" style={{ height: '200px' }}></div>
           <div className="glass-card skeleton" style={{ height: '200px' }}></div>
         </div>
         <style dangerouslySetInnerHTML={{ __html: `
-          .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: 12px; }
+          .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; border-radius: 28px; }
           @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+          .skeleton-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+          @media (min-width: 768px) { .skeleton-grid { grid-template-columns: repeat(3, 1fr); } }
         `}} />
       </div>
     );
@@ -122,15 +124,15 @@ export default function Profile() {
   const currentAvatarUrl = isEditing ? formData.avatar : (profile?.avatar || `https://api.dicebear.com/7.x/notionists/svg?seed=${profile?.name || 'User'}`);
 
   return (
-    <div className="container animate-fade-in-up" style={{ padding: '4rem 2rem' }}>
+    <div className="container animate-fade-in-up profile-container" style={{ padding: '2rem 1rem' }}>
       <GuestOverlay show={!isAuthenticated} message="You are viewing a guest profile. Sign in to customize your own!">
         
         {/* Header Card */}
-        <div className="glass-card" style={{ padding: '3rem', background: 'white', position: 'relative', overflow: 'hidden', marginBottom: '3rem' }}>
+        <div className="glass-card profile-header-card" style={{ background: 'white', position: 'relative', overflow: 'hidden', marginBottom: '3rem' }}>
           <div style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '150px', background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.05), rgba(99, 102, 241, 0.05))', zIndex: 0 }}></div>
           
-          <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'flex-end', gap: '2rem', marginTop: '60px', flexWrap: 'wrap' }}>
-            <div style={{ position: 'relative' }}>
+          <div className="profile-header-content" style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '2rem', marginTop: '60px', flexWrap: 'wrap' }}>
+            <div className="avatar-section" style={{ position: 'relative' }}>
               <div style={{ width: '140px', height: '140px', borderRadius: '50%', background: 'white', padding: '6px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
                 <div style={{ width: '100%', height: '100%', borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', transition: 'all 0.5s ease' }}>
                   <img src={currentAvatarUrl} alt="User Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -148,9 +150,9 @@ export default function Profile() {
               )}
             </div>
             
-            <div style={{ flex: 1, minWidth: '300px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
+            <div className="info-section" style={{ flex: 1, minWidth: '280px' }}>
+              <div className="info-header-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
+                <div style={{ minWidth: '200px' }}>
                   {isEditing ? (
                     <input 
                       type="text" 
@@ -167,7 +169,7 @@ export default function Profile() {
                   </p>
                 </div>
                 
-                <div style={{ display: 'flex', gap: '1rem' }}>
+                <div className="profile-actions" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                   {isAuthenticated && (
                     isEditing ? (
                       <>
@@ -186,7 +188,7 @@ export default function Profile() {
                   )}
                   
                   {!isEditing && (
-                    <div style={{ textAlign: 'center', padding: '1rem 2rem', background: 'rgba(217, 119, 6, 0.08)', borderRadius: '24px', border: '1px solid rgba(217, 119, 6, 0.1)' }}>
+                    <div className="trust-badge" style={{ textAlign: 'center', padding: '1rem 2rem', background: 'rgba(217, 119, 6, 0.08)', borderRadius: '24px', border: '1px solid rgba(217, 119, 6, 0.1)' }}>
                       <p style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Trust Score</p>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '2rem', fontWeight: '800', color: '#b45309', fontFamily: 'var(--font-heading)' }}>
                         <Star fill="var(--secondary)" size={24} color="var(--secondary)" /> {profile?.trustScore}
@@ -200,7 +202,7 @@ export default function Profile() {
         </div>
 
         {/* Profile Content */}
-        <div className="grid" style={{ gridTemplateColumns: '1fr 2fr', gap: '2.5rem' }}>
+        <div className="profile-main-grid" style={{ display: 'grid', gap: '2.5rem' }}>
           
           {/* Sidebar */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
@@ -375,6 +377,33 @@ export default function Profile() {
 
         </div>
       </GuestOverlay>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .profile-main-grid { grid-template-columns: 1fr; }
+        .profile-header-card { padding: 2rem; }
+        .profile-header-content { align-items: center; flex-direction: column; text-align: center; }
+        .info-header-flex { justify-content: center; }
+        .profile-actions { justify-content: center; width: 100%; }
+        .trust-badge { width: 100%; }
+
+        @media (min-width: 768px) {
+          .profile-container { padding: 4rem 2rem !important; }
+          .profile-header-card { padding: 3rem; }
+          .profile-header-content { align-items: flex-end; flex-direction: row; text-align: left; }
+          .info-header-flex { justify-content: space-between; }
+          .profile-actions { justify-content: flex-end; width: auto; }
+          .trust-badge { width: auto; }
+        }
+
+        @media (min-width: 1024px) {
+          .profile-main-grid { grid-template-columns: 1fr 2fr; }
+        }
+
+        @media (max-width: 480px) {
+          .profile-actions button { width: 100%; }
+          .heading-lg { font-size: 2rem !important; }
+        }
+      `}} />
     </div>
   );
 }
