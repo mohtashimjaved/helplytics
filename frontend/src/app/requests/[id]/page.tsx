@@ -203,9 +203,9 @@ export default function RequestDetail() {
 
   if (loading) {
     return (
-      <div className="container" style={{ padding: '3rem 2rem' }}>
+      <div className="container" style={{ padding: '2rem 1rem' }}>
         <div className="skeleton" style={{ width: '150px', height: '24px', marginBottom: '2.5rem', borderRadius: '100px' }}></div>
-        <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', gap: '2.5rem' }}>
+        <div className="detail-grid">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
             <div className="glass-card skeleton" style={{ height: '350px', borderRadius: '24px' }}></div>
             <div className="glass-card skeleton" style={{ height: '450px', borderRadius: '24px' }}></div>
@@ -216,6 +216,17 @@ export default function RequestDetail() {
           </div>
         </div>
         <style dangerouslySetInnerHTML={{ __html: `
+          .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+          @media (min-width: 1024px) {
+            .detail-grid {
+              grid-template-columns: 2fr 1fr;
+              gap: 3rem;
+            }
+          }
           .skeleton {
             background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
             background-size: 200% 100%;
@@ -235,18 +246,18 @@ export default function RequestDetail() {
   const isOwner = user?.id === request.requester?._id;
 
   return (
-    <div className="container animate-fade-in-up" style={{ padding: '3rem 2rem' }}>
+    <div className="container animate-fade-in-up detail-page-container">
       <Link href="/feed" className="btn-back" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#64748b', textDecoration: 'none', marginBottom: '2.5rem', width: 'fit-content', fontWeight: '700', transition: 'all 0.3s ease' }}>
         <ArrowLeft size={20} /> Back to Community Feed
       </Link>
 
-      <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', gap: '3rem' }}>
+      <div className="detail-grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
           {/* Main Content */}
-          <div className="glass-card" style={{ padding: '3rem', background: 'white', boxShadow: '0 40px 100px rgba(0,0,0,0.04)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
-              <h1 className="heading-lg" style={{ marginBottom: 0, fontSize: '2.5rem', color: '#0f172a' }}>{request.title}</h1>
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div className="glass-card content-card" style={{ background: 'white', boxShadow: '0 40px 100px rgba(0,0,0,0.04)' }}>
+            <div className="content-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem', gap: '1rem' }}>
+              <h1 className="heading-lg request-title" style={{ marginBottom: 0, color: '#0f172a' }}>{request.title}</h1>
+              <div className="header-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexShrink: 0 }}>
                 {isOwner && request.status !== 'solved' && (
                   <div style={{ display: 'flex', gap: '0.75rem', marginRight: '1rem' }}>
                     <button 
@@ -279,7 +290,7 @@ export default function RequestDetail() {
               </div>
             </div>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', color: '#64748b', fontSize: '0.95rem', marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+            <div className="meta-bar" style={{ display: 'flex', alignItems: 'center', gap: '2rem', color: '#64748b', fontSize: '0.95rem', marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid rgba(0,0,0,0.05)', flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(0,0,0,0.05)' }}>
                   <User size={18} style={{ color: 'var(--primary)' }} />
@@ -304,7 +315,7 @@ export default function RequestDetail() {
           </div>
 
           {/* Discussion */}
-          <div className="glass-card" style={{ padding: '3rem', background: 'white' }}>
+          <div className="glass-card content-card" style={{ background: 'white' }}>
             <h3 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-heading)', fontWeight: '800', marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#0f172a' }}>
               <MessageSquare size={24} style={{ color: 'var(--primary)' }} /> Discussion ({request.messages?.length || 0})
             </h3>
@@ -432,8 +443,46 @@ export default function RequestDetail() {
       </div>
       
       <style dangerouslySetInnerHTML={{ __html: `
+        .detail-page-container { padding: 2rem 1rem; }
+        .detail-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .content-card { padding: 1.5rem; }
+        .request-title { fontSize: 1.75rem; line-height: 1.2; }
+        
+        @media (min-width: 768px) {
+          .detail-page-container { padding: 3rem 2rem; }
+          .content-card { padding: 2.5rem; }
+          .request-title { fontSize: 2.25rem; }
+        }
+
+        @media (min-width: 1024px) {
+          .detail-grid { grid-template-columns: 2fr 1fr; gap: 3rem; }
+          .content-card { padding: 3rem; }
+          .request-title { fontSize: 2.5rem; }
+        }
+
+        @media (max-width: 640px) {
+          .content-header { flex-direction: column; }
+          .header-actions { width: 100%; justify-content: space-between; }
+          .meta-bar { gap: 1rem; }
+        }
+
         .badge-resolved { background: rgba(16, 185, 129, 0.08); color: var(--success); border-color: rgba(16, 185, 129, 0.15); }
         .btn-back:hover { color: var(--primary) !important; transform: translateX(-8px); }
+
+        .edit-modal-content {
+          width: 100%;
+          maxWidth: 700px;
+          padding: 1.5rem;
+          background: white;
+          boxShadow: 0 40px 100px rgba(0,0,0,0.2);
+        }
+
+        @media (min-width: 768px) {
+          .edit-modal-content { padding: 3.5rem; }
+          .modal-grid { grid-template-columns: 1fr 1fr; }
+        }
+        
+        .modal-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
       `}} />
 
       {/* Edit Modal */}
@@ -441,7 +490,7 @@ export default function RequestDetail() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(8px)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
           onClick={() => setShowEditModal(false)}
         >
-          <div className="glass-card animate-fade-in-up" style={{ width: '100%', maxWidth: '700px', padding: '3.5rem', background: 'white', boxShadow: '0 40px 100px rgba(0,0,0,0.2)' }}
+          <div className="glass-card animate-fade-in-up edit-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
@@ -468,7 +517,7 @@ export default function RequestDetail() {
                   style={{ minHeight: '150px', resize: 'vertical', background: '#f8fafc', border: '2px solid var(--primary)' }} 
                 />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+              <div className="modal-grid">
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.85rem', color: '#334155', fontWeight: '600' }}>Category</label>
                   <select 
