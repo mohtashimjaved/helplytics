@@ -89,14 +89,14 @@ export function DialogProvider({ children }: { children: ReactNode }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 2rem;
+          padding: 1rem;
           animation: fadeIn 0.3s ease-out forwards;
         }
         
         .dialog-card {
           width: 100%;
           max-width: 450px;
-          padding: 2.5rem;
+          padding: 1.5rem;
           background: white;
           text-align: center;
           box-shadow: 0 40px 100px rgba(0,0,0,0.15);
@@ -116,7 +116,7 @@ export function DialogProvider({ children }: { children: ReactNode }) {
         
         .dialog-title {
           font-family: var(--font-heading);
-          font-size: 1.75rem;
+          font-size: 1.5rem;
           font-weight: 800;
           color: #0f172a;
           margin-bottom: 0.75rem;
@@ -124,20 +124,44 @@ export function DialogProvider({ children }: { children: ReactNode }) {
         
         .dialog-message {
           color: #64748b;
-          font-size: 1.05rem;
+          font-size: 1rem;
           line-height: 1.6;
-          margin-bottom: 2.5rem;
+          margin-bottom: 2rem;
         }
         
         .dialog-actions {
           display: flex;
           gap: 1rem;
           justify-content: center;
+          flex-direction: column;
         }
         
         .dialog-actions .btn {
-          padding: 0.75rem 2rem;
-          min-width: 120px;
+          width: 100%;
+          padding: 0.85rem 1.5rem;
+        }
+
+        @media (min-width: 480px) {
+          .dialog-overlay {
+            padding: 2rem;
+          }
+          .dialog-card {
+            padding: 2.5rem;
+          }
+          .dialog-title {
+            font-size: 1.75rem;
+          }
+          .dialog-message {
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+          }
+          .dialog-actions {
+            flex-direction: row;
+          }
+          .dialog-actions .btn {
+            width: auto;
+            min-width: 120px;
+          }
         }
 
         .btn-danger {
