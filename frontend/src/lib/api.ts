@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 const API_BASE = process.env.NEXT_PUBLIC_API_URL
+=======
+const API_BASE = process.env.NEXT_PUBLIC_API_URL 
+>>>>>>> Stashed changes
 
 import { getCookie, setCookie, removeCookie } from './cookies';
 
