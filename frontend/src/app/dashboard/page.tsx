@@ -83,18 +83,21 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="container" style={{ padding: '3rem 2rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3rem' }}>
+      <div className="container dashboard-container" style={{ padding: '2rem 1rem' }}>
+        <div className="dashboard-header">
           <div className="skeleton" style={{ width: '300px', height: '40px' }}></div>
           <div className="skeleton" style={{ width: '150px', height: '40px' }}></div>
         </div>
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem', marginBottom: '3rem' }}>
+        <div className="stats-grid">
           <div className="glass-card skeleton" style={{ height: '120px' }}></div>
           <div className="glass-card skeleton" style={{ height: '120px' }}></div>
           <div className="glass-card skeleton" style={{ height: '120px' }}></div>
         </div>
         <div className="glass-card skeleton" style={{ height: '400px' }}></div>
         <style dangerouslySetInnerHTML={{ __html: `
+          .dashboard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; flex-direction: column; gap: 1.5rem; }
+          .stats-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+          @media (min-width: 768px) { .dashboard-header { flex-direction: row; align-items: center; } .stats-grid { grid-template-columns: repeat(3, 1fr); } }
           .skeleton {
             background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
             background-size: 200% 100%;
@@ -114,20 +117,20 @@ export default function Dashboard() {
   const showHelpingOthers = isAuthenticated && user?.role !== 'need_help';
 
   return (
-    <div className="container animate-fade-in-up" style={{ padding: '3rem 2rem' }}>
+    <div className="container animate-fade-in-up dashboard-container">
       <GuestOverlay show={!isAuthenticated}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+        <div className="dashboard-header">
         <div>
-          <h1 className="heading-lg" style={{ marginBottom: '0.5rem', fontSize: '2.5rem' }}>
+          <h1 className="heading-lg welcome-title" style={{ marginBottom: '0.5rem' }}>
             {isAuthenticated ? `Welcome, ${user?.name}` : 'Platform Insights'}
           </h1>
-          <p className="text-muted" style={{ fontSize: '1.05rem' }}>
+          <p className="text-muted dashboard-subtitle">
             {isAuthenticated ? 'Your personal dashboard and activity overview.' : 'Monitor community activity and impact metrics.'}
           </p>
         </div>
         {showMyRequests && (
           <Link href="/feed">
-            <button className="btn btn-primary" style={{ display: 'flex', gap: '0.6rem', padding: '0.85rem 1.5rem', borderRadius: '100px' }}>
+            <button className="btn btn-primary action-btn" style={{ display: 'flex', gap: '0.6rem', borderRadius: '100px' }}>
               <Plus size={18} /> New Request
             </button>
           </Link>
@@ -135,17 +138,17 @@ export default function Dashboard() {
       </div>
       
       {/* Stats Cards */}
-      <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', marginBottom: '3.5rem' }}>
+      <div className="stats-grid">
         {showMyRequests && (
-          <div className="glass-card delay-100" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '2rem', background: 'white' }}>
-            <div style={{ padding: '1.25rem', borderRadius: '20px', background: 'rgba(5, 150, 105, 0.1)', color: 'var(--primary)', boxShadow: '0 8px 16px rgba(5, 150, 105, 0.08)' }}>
+          <div className="glass-card delay-100 stat-card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'white' }}>
+            <div className="stat-icon-wrapper" style={{ padding: '1.25rem', borderRadius: '20px', background: 'rgba(5, 150, 105, 0.1)', color: 'var(--primary)', boxShadow: '0 8px 16px rgba(5, 150, 105, 0.08)' }}>
               <Activity size={32} />
             </div>
             <div>
               <p className="text-muted" style={{ fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#64748b', marginBottom: '0.25rem' }}>
                 My Requests
               </p>
-              <h2 style={{ fontSize: '2.75rem', fontWeight: '800', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
+              <h2 className="stat-value" style={{ fontWeight: '800', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
                 {stats.total}
               </h2>
               <p style={{ color: 'var(--success)', fontSize: '0.9rem', fontWeight: '700', marginTop: '0.25rem' }}>
@@ -156,15 +159,15 @@ export default function Dashboard() {
         )}
 
         {showHelpingOthers && (
-          <div className="glass-card delay-200" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '2rem', background: 'white' }}>
-            <div style={{ padding: '1.25rem', borderRadius: '20px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', boxShadow: '0 8px 16px rgba(16, 185, 129, 0.08)' }}>
+          <div className="glass-card delay-200 stat-card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'white' }}>
+            <div className="stat-icon-wrapper" style={{ padding: '1.25rem', borderRadius: '20px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', boxShadow: '0 8px 16px rgba(16, 185, 129, 0.08)' }}>
               <HeartHandshake size={32} />
             </div>
             <div>
               <p className="text-muted" style={{ fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#64748b', marginBottom: '0.25rem' }}>
                 Helping Others
               </p>
-              <h2 style={{ fontSize: '2.75rem', fontWeight: '800', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
+              <h2 className="stat-value" style={{ fontWeight: '800', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
                 {stats.helping}
               </h2>
               <p style={{ color: 'var(--success)', fontSize: '0.9rem', fontWeight: '700', marginTop: '0.25rem' }}>
@@ -174,15 +177,15 @@ export default function Dashboard() {
           </div>
         )}
 
-        <div className="glass-card delay-300" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '2rem', background: 'white' }}>
-          <div style={{ padding: '1.25rem', borderRadius: '20px', background: 'rgba(217, 119, 6, 0.1)', color: 'var(--secondary)', boxShadow: '0 8px 16px rgba(217, 119, 6, 0.08)' }}>
+        <div className="glass-card delay-300 stat-card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'white' }}>
+          <div className="stat-icon-wrapper" style={{ padding: '1.25rem', borderRadius: '20px', background: 'rgba(217, 119, 6, 0.1)', color: 'var(--secondary)', boxShadow: '0 8px 16px rgba(217, 119, 6, 0.08)' }}>
             <Clock size={32} />
           </div>
           <div>
             <p className="text-muted" style={{ fontWeight: '700', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#64748b', marginBottom: '0.25rem' }}>
               {isAuthenticated ? 'Trust Score' : 'Avg Response'}
             </p>
-            <h2 style={{ fontSize: '2.75rem', fontWeight: '800', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
+            <h2 className="stat-value" style={{ fontWeight: '800', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>
               {isAuthenticated ? (user?.trustScore || 0) : '4.2h'}
             </h2>
             <p style={{ color: isAuthenticated ? 'var(--primary)' : 'var(--danger)', fontSize: '0.9rem', fontWeight: '700', marginTop: '0.25rem' }}>
@@ -193,10 +196,10 @@ export default function Dashboard() {
       </div>
 
       {/* Lists */}
-      <div className="grid" style={{ gridTemplateColumns: showMyRequests && showHelpingOthers ? '1fr 1fr' : '1fr', gap: '2.5rem', marginBottom: '3.5rem' }}>
+      <div className="lists-grid">
         {showMyRequests && (
-          <div className="glass-card" style={{ padding: '2.5rem', background: 'white' }}>
-            <h3 style={{ fontSize: '1.4rem', fontWeight: '700', fontFamily: 'var(--font-heading)', marginBottom: '2rem', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="glass-card list-card" style={{ background: 'white' }}>
+            <h3 className="list-title" style={{ fontWeight: '700', fontFamily: 'var(--font-heading)', marginBottom: '2rem', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                <Activity size={20} style={{ color: 'var(--primary)' }} /> My Requests
             </h3>
             {myRequests.length === 0 ? (
@@ -228,8 +231,8 @@ export default function Dashboard() {
         )}
         
         {showHelpingOthers && (
-          <div className="glass-card" style={{ padding: '2.5rem', background: 'white' }}>
-            <h3 style={{ fontSize: '1.4rem', fontWeight: '700', fontFamily: 'var(--font-heading)', marginBottom: '2rem', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div className="glass-card list-card" style={{ background: 'white' }}>
+            <h3 className="list-title" style={{ fontWeight: '700', fontFamily: 'var(--font-heading)', marginBottom: '2rem', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                <HeartHandshake size={20} style={{ color: 'var(--success)' }} /> Helping Others
             </h3>
             {helpingRequests.length === 0 ? (
@@ -257,15 +260,15 @@ export default function Dashboard() {
       </div>
 
       {/* Chart */}
-      <div className="glass-card delay-300" style={{ padding: '3rem', background: 'white' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div className="glass-card delay-300 chart-card" style={{ background: 'white' }}>
+        <div className="chart-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
           <div>
-            <h3 style={{ fontSize: '1.6rem', fontWeight: '800', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>Engagement Trends</h3>
+            <h3 className="chart-title" style={{ fontWeight: '800', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>Engagement Trends</h3>
             <p style={{ color: '#64748b', fontSize: '0.95rem', marginTop: '0.25rem' }}>Community growth and contribution metrics over time.</p>
           </div>
-          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <div className="chart-legend" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.9rem', color: '#475569', fontWeight: '600' }}>
-              <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--primary)', boxShadow: '0 0 10px var(--primary-glow)' }}></span> Requests
+              <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--primary)', boxShadow: '0 0 10px var(--primary-glow)', flexShrink: 0 }}></span> Requests
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.9rem', color: '#475569', fontWeight: '600' }}>
               <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--success)', boxShadow: '0 0 10px rgba(16, 185, 129, 0.4)' }}></span> Help Given
@@ -306,6 +309,52 @@ export default function Dashboard() {
         </div>
       </GuestOverlay>
       <style dangerouslySetInnerHTML={{ __html: `
+        .dashboard-container { padding: 2rem 1rem; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; flex-direction: column; gap: 1.5rem; }
+        .welcome-title { font-size: 2rem; }
+        .dashboard-subtitle { font-size: 0.95rem; }
+        .action-btn { width: 100%; justify-content: center; padding: 1rem; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+        .stat-card { padding: 1.5rem; }
+        .stat-value { font-size: 2.25rem; }
+
+        .lists-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3.5rem; }
+        .list-card { padding: 1.5rem; }
+        .list-title { font-size: 1.25rem; }
+
+        .chart-card { padding: 1.5rem; }
+        .chart-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+        .chart-title { font-size: 1.4rem; }
+        .chart-legend { width: 100%; justify-content: flex-start; }
+
+        @media (min-width: 640px) {
+          .dashboard-container { padding: 3rem 2rem; }
+          .dashboard-header { flex-direction: row; align-items: center; margin-bottom: 3rem; gap: 0; }
+          .welcome-title { font-size: 2.5rem; }
+          .dashboard-subtitle { font-size: 1.05rem; }
+          .action-btn { width: auto; padding: 0.85rem 1.5rem; }
+
+          .stats-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+          .stat-card { padding: 2rem; }
+          .stat-value { font-size: 2.75rem; }
+
+          .chart-card { padding: 3rem; }
+          .chart-header { flex-direction: row; align-items: center; gap: 0; }
+          .chart-title { font-size: 1.6rem; }
+          .chart-legend { width: auto; }
+        }
+
+        @media (min-width: 1024px) {
+          .lists-grid { grid-template-columns: ${showMyRequests && showHelpingOthers ? '1fr 1fr' : '1fr'}; gap: 2.5rem; }
+          .list-card { padding: 2.5rem; }
+          .list-title { font-size: 1.4rem; }
+        }
+
+        @media (max-width: 480px) {
+          .stat-icon-wrapper { display: none; }
+        }
+
         .list-item-hover:hover { border-color: var(--primary) !important; background: white !important; box-shadow: 0 8px 24px rgba(0,0,0,0.04); transform: translateX(8px); }
       `}} />
     </div>
