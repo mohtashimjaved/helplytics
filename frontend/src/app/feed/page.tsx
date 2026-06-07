@@ -163,17 +163,17 @@ export default function Feed() {
   const categories = Array.from(new Set(requests.map(r => r.category)));
 
   return (
-    <div className="container animate-fade-in-up" style={{ padding: '3rem 2rem' }}>
+    <div className="container animate-fade-in-up feed-page-container">
       <GuestOverlay show={!isAuthenticated} message="You're viewing community requests as a guest. Sign in to post or offer help!">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+        <div className="feed-header">
         <div>
           <h1 className="heading-lg" style={{ marginBottom: '0.5rem' }}>Community Feed</h1>
           <p className="text-muted">Discover peers who need your expertise, or post your own request.</p>
         </div>
         {(!user || user.role !== 'can_help') && (
           <button
-            className="btn btn-primary"
-            style={{ borderRadius: '100px', padding: '0.85rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+            className="btn btn-primary post-request-btn"
+            style={{ borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
             onClick={() => isAuthenticated ? setShowCreateModal(true) : router.push('/register')}
           >
             <Plus size={18} /> Post a Request
@@ -182,7 +182,7 @@ export default function Feed() {
       </div>
 
       {/* Search and filter bar */}
-      <div className="glass-card" style={{ marginBottom: '2.5rem', display: 'flex', gap: '1.5rem', padding: '1.25rem', background: 'white', boxShadow: '0 10px 30px rgba(0,0,0,0.04)' }}>
+      <div className="glass-card search-filter-bar">
         <div style={{ position: 'relative', flex: 1 }}>
           <Search size={20} style={{ position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
           <input 
@@ -196,7 +196,7 @@ export default function Feed() {
         </div>
         <button
           className="btn btn-secondary"
-          style={{ gap: '0.6rem', borderRadius: '100px', background: showFilters ? 'rgba(5, 150, 105, 0.1)' : 'white', border: '1px solid rgba(0,0,0,0.05)', color: showFilters ? 'var(--primary)' : undefined }}
+          style={{ gap: '0.6rem', borderRadius: '100px', background: showFilters ? 'rgba(5, 150, 105, 0.1)' : 'white', border: '1px solid rgba(0,0,0,0.05)', color: showFilters ? 'var(--primary)' : undefined, padding: '0.85rem 1.5rem' }}
           onClick={() => setShowFilters(!showFilters)}
         >
           <Filter size={18} /> Filters
@@ -237,10 +237,10 @@ export default function Feed() {
           <>
             {filteredRequests.map((request, index) => (
               <Link key={request._id} href={`/requests/${request._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div className="glass-card animate-fade-in-up request-card" style={{ padding: '2.5rem', animationDelay: `${index * 100}ms`, cursor: 'pointer', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)', marginBottom: '1.5rem', background: 'white' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
-                    <h3 style={{ fontSize: '1.5rem', fontWeight: '700', fontFamily: 'var(--font-heading)', color: '#0f172a' }}>{request.title}</h3>
-                    <span className="badge" style={{ 
+                <div className="glass-card animate-fade-in-up feed-request-card" style={{ animationDelay: `${index * 100}ms`, cursor: 'pointer', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)', marginBottom: '1.5rem', background: 'white' }}>
+                  <div className="request-card-header">
+                    <h3 className="request-title">{request.title}</h3>
+                    <span className="badge urgency-badge" style={{ 
                       background: request.urgency === 'critical' ? 'rgba(239, 68, 68, 0.08)' : request.urgency === 'high' ? 'rgba(245, 158, 11, 0.08)' : 'rgba(5, 150, 105, 0.08)',
                       color: request.urgency === 'critical' ? 'var(--danger)' : request.urgency === 'high' ? 'var(--warning)' : 'var(--primary)',
                       border: `1px solid ${request.urgency === 'critical' ? 'rgba(239, 68, 68, 0.15)' : request.urgency === 'high' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(5, 150, 105, 0.15)'}`
@@ -257,7 +257,7 @@ export default function Feed() {
                     ))}
                   </div>
 
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(0,0,0,0.05)', paddingTop: '1.5rem' }}>
+                  <div className="request-card-footer">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', color: '#64748b', fontSize: '0.95rem' }}>
                       <span style={{ fontWeight: '600', color: '#334155' }}>{request.requester?.name || 'Anonymous'}</span>
                       <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}><Clock size={16} /> {timeAgo(request.createdAt)}</span>
@@ -291,7 +291,7 @@ export default function Feed() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(8px)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
           onClick={() => setShowCreateModal(false)}
         >
-          <div className="glass-card animate-fade-in-up" style={{ width: '100%', maxWidth: '700px', padding: '3.5rem', background: 'white', boxShadow: '0 40px 100px rgba(0,0,0,0.2)' }}
+          <div className="glass-card animate-fade-in-up feed-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
@@ -324,7 +324,7 @@ export default function Feed() {
                 />
                 {createErrors.description && <span className="form-error"><AlertCircle size={14} /> {createErrors.description}</span>}
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+              <div className="modal-grid">
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.85rem', color: '#334155', fontWeight: '600' }}>Category</label>
                   <select 
@@ -379,7 +379,48 @@ export default function Feed() {
       )}
 
       <style dangerouslySetInnerHTML={{__html: `
-        .request-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(5, 150, 105, 0.08) !important; }
+        .feed-page-container { padding: 2rem 1rem; }
+        .feed-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem; flex-direction: column; gap: 1.5rem; }
+        .post-request-btn { width: 100%; justify-content: center; padding: 1rem; }
+        
+        .search-filter-bar { margin-bottom: 2rem; display: flex; flex-direction: column; gap: 1rem; padding: 1rem; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+        
+        .feed-request-card { padding: 1.5rem; }
+        .request-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-direction: column; gap: 1rem; }
+        .request-title { font-size: 1.25rem; font-weight: 700; font-family: var(--font-heading); color: #0f172a; margin: 0; }
+        .urgency-badge { width: fit-content; }
+        
+        .request-card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1.25rem; flex-direction: column; gap: 1.25rem; align-items: flex-start; }
+        .request-card-footer button { width: 100%; }
+
+        .feed-modal-content { width: 100%; maxWidth: 700px; padding: 1.5rem; background: white; box-shadow: 0 40px 100px rgba(0,0,0,0.2); }
+        .modal-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+
+        @media (min-width: 640px) {
+          .feed-page-container { padding: 3rem 2rem; }
+          .feed-header { flex-direction: row; align-items: center; margin-bottom: 3rem; gap: 0; }
+          .post-request-btn { width: auto; padding: 0.85rem 1.5rem; }
+          
+          .search-filter-bar { flex-direction: row; gap: 1.5rem; padding: 1.25rem; margin-bottom: 2.5rem; border-radius: 100px; }
+          .search-filter-bar input { border-radius: 100px; }
+          
+          .feed-request-card { padding: 2.5rem; }
+          .request-card-header { flex-direction: row; gap: 0; }
+          .request-title { font-size: 1.5rem; }
+          
+          .request-card-footer { flex-direction: row; align-items: center; gap: 0; }
+          .request-card-footer button { width: auto; }
+
+          .feed-modal-content { padding: 3.5rem; }
+          .modal-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+        }
+
+        @media (max-width: 480px) {
+           .feed-header h1 { font-size: 1.75rem !important; }
+           .feed-header p { font-size: 0.9rem; }
+        }
+
+        .feed-request-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(5, 150, 105, 0.08) !important; }
         .skeleton {
           background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
           background-size: 200% 100%;
