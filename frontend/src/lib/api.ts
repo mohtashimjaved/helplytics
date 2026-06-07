@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL
 
 import { getCookie, setCookie, removeCookie } from './cookies';
 
@@ -39,6 +39,9 @@ async function request(endpoint: string, options: RequestInit = {}) {
 export async function loginUser(email: string, password: string) {
   const data = await request('/auth/login', {
     method: 'POST',
+    headers: {
+    'Content-Type': 'application/json', // 👈 Crucial! Without this, Express might parse body as undefined
+  },
     body: JSON.stringify({ email, password }),
   });
   
