@@ -45,16 +45,52 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               {toast.type === 'error' && <XCircle size={20} />}
               {toast.type === 'info' && <Info size={20} />}
             </div>
-            <div style={{ flex: 1, fontSize: '0.95rem', fontWeight: '500' }}>{toast.message}</div>
+            <div className="toast-message-content">{toast.message}</div>
             <button 
               onClick={() => removeToast(toast.id)}
-              style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', display: 'flex' }}
+              className="toast-close-btn"
             >
               <X size={16} />
             </button>
           </div>
         ))}
       </div>
+      <style jsx global>{`
+        .toast-message-content {
+          flex: 1;
+          font-size: 0.9rem;
+          font-weight: 500;
+          line-height: 1.4;
+        }
+
+        .toast-close-btn {
+          background: none;
+          border: none;
+          color: #94a3b8;
+          cursor: pointer;
+          display: flex;
+          padding: 0.25rem;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+        }
+
+        .toast-close-btn:hover {
+          background: rgba(0, 0, 0, 0.05);
+          color: #64748b;
+        }
+
+        @media (min-width: 640px) {
+          .toast-message-content {
+            font-size: 0.95rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .toast-message-content {
+            font-size: 0.85rem;
+          }
+        }
+      `}</style>
     </ToastContext.Provider>
   );
 }
